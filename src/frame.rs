@@ -86,7 +86,14 @@ impl Frame {
                     }
                     Ok(Frame::Null)
                 } else {
-
+                    let len = get_decimal(src)?.try_into()?;
+                    let n = len + 2;
+                    if src.remaining() < n {
+                        return Err(Error::Incomplete);
+                    }
+                    let data = Bytes::copy_from_slice(&src.bytes()[..len]);
+                    skip(src, n)?;
+                    Ok(Frame::Bulk(data))
                 }
             }
             _ => unimplemented!()
