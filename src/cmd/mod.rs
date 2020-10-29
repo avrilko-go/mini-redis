@@ -32,7 +32,7 @@ impl Command {
         Ok(command)
     }
 
-    pub(crate) async fn apply(&self, db: &Db, dst: &mut Connection, shutdown: &mut Shutdown) -> crate::Result<()> {
+    pub(crate) async fn apply(self, db: &Db, dst: &mut Connection, shutdown: &mut Shutdown) -> crate::Result<()> {
         use Command::*;
         match self {
             Get(cmd) => cmd.apply(db, dst).await?,

@@ -20,9 +20,6 @@ impl Parse {
     pub fn new(frame: Frame) -> Result<Self, ParseError> {
         let array = match frame {
             Frame::Array(array) => array,
-            Frame::Bulk(data) => {
-                std::str::from_utf8(&data[..]).map(|s| s.to_string()).map_err(|_| "protocol error; invalid string".into())
-            }
             frame => {
                 return Err(format!("protocol error; expected array, got {:?}", frame).into());
             }

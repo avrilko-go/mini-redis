@@ -11,9 +11,7 @@ impl Unknown {
     }
 
     pub(crate) fn get_name(&self) -> &str {
-        &self.command_name.into()
+        &self.command_name
     }
-
-
 }
 
