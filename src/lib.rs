@@ -4,6 +4,7 @@ pub mod shutdown;
 pub mod connection;
 pub mod frame;
 pub mod cmd;
+pub mod parse;
 
 
 // redis-server 默认监听端口

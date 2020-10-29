@@ -126,7 +126,6 @@ impl Handler {
                 None => return Ok(())
             };
 
-
             let cmd = Command::from_frame(frame)?;
             debug!(?cmd);
             cmd.apply(&self.db, &mut self.connection, &mut self.shutdown).await?;
