@@ -3,6 +3,7 @@ mod get;
 pub use get::Get;
 
 mod unknown;
+mod set;
 
 pub use unknown::Unknown;
 
@@ -11,10 +12,12 @@ use crate::db::Db;
 use crate::connection::Connection;
 use crate::shutdown::Shutdown;
 use crate::parse::Parse;
+use crate::cmd::set::Set;
 
 #[derive(Debug)]
 pub enum Command {
     Get(Get),
+    Set(Set),
     Unknown(Unknown),
 }
 
@@ -24,6 +27,7 @@ impl Command {
         let command_name = parse.next_string()?.to_lowercase();// 转成小写
         let command = match &command_name[..] {
             "get" => Command::Get(Get::parse_frames(&mut parse)?),
+            "set" => Command::Set(Set::parse_frames(&mut parse)?),
             _ => {
                 return Ok(Command::Unknown(Unknown::new(command_name)));
             }
@@ -36,6 +40,7 @@ impl Command {
         use Command::*;
         match self {
             Get(cmd) => cmd.apply(db, dst).await?,
+            Set(cmd) => cmd.apply(db, dst).await?,
             _ => {}
         }
         Ok(())
