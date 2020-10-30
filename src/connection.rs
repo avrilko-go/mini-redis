@@ -63,13 +63,12 @@ impl Connection {
                 self.stream.write_u8(b'*').await?;
                 self.write_decimal(val.len() as u64).await?;
                 for entry in &**val {
-                    self.write_value(entry);
+                    self.write_value(entry).await?;
                 }
             }
             _ => self.write_value(frame).await?
         }
-
-        Ok(())
+        self.stream.flush().await
     }
 
     async fn write_value(&mut self, frame: &Frame) -> std::io::Result<()> {
